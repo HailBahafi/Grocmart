@@ -1,0 +1,40 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.dark_mode {
+  background-color: rgb(42, 41, 41);
+}
+.dark_mode h1,.dark_mode h2,.dark_mode h3,.dark_mode h5,.dark_mode h6, .dark_mode p,.dark_mode span,.dark_mode th,.dark_mode td {
+  color: aliceblue;
+}
