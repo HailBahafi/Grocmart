@@ -1,11 +1,5 @@
 import React from 'react'
 function Cartcheckout({totalPrice}) {
-    // let cart = JSON.parse(localStorage.getItem('cart') || '[]')
-
-    // for(const i=0;i<localStorage.length;i++){
-    //     let result=localStorage.getItem("currentprice")
-    //     console.log(result)
-    // }
     return (
         <div className=' fixed right-0 pr-16 '>
             <h6 className='text-xs'>ENTER PROMO CODE</h6>

@@ -1,41 +1,55 @@
 import React, { useState, useEffect ,useContext } from 'react'
-import CartState from "./ContextProvider"
+import ThemeContext from "./ContextProvider"
 
 function CardInputNumber({ item }) {
     const [count, setCount] = useState(0);
     const [showButtons, setShowButtons] = useState(false);
-    const {setCart} = useContext(CartState)
+    const {setCart} = useContext(ThemeContext)
 
-    useEffect(() => {
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]')
-        let cartItem = cart.filter(w => w.id === item.id)
-        if (cartItem[0]) {
-            setCount(parseInt(cartItem[0].quantity))
-            setShowButtons(true)
+    const getCartFromLocalStorage = () => {
+        try {
+          const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+          return Array.isArray(cart) ? cart : [];
+        } catch (error) {
+          console.error('Error parsing cart data:', error);
+          return [];
         }
-    }, [item.id]); //item.id
+      };
 
+      useEffect(() => {
+        const cart = getCartFromLocalStorage();
+        if (Array.isArray(cart)) {
+          const cartItem = cart.filter((w) => w.id === item.id);
+          if (cartItem[0]) {
+            setCount(parseInt(cartItem[0].quantity));
+            setShowButtons(true);
+          }
+        }
+      }, [item.id]);
+      
     const handlePlusClick = () => {
         if (!showButtons) setShowButtons(true);
          const quantity = count + 1;
         if (quantity < 15) setCount(quantity)
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]')
+        let cart = getCartFromLocalStorage()
         cart = cart.filter(w => w.id !== item.id)
         cart = [...cart, { ...item, quantity }]
         localStorage.setItem('cart', JSON.stringify(cart))
         setCart(cart)
     };
+
     const handleMinusClick = () => {
         if (count === 1) setShowButtons(false);
         let quantity = count - 1;
         if (quantity >= 0) setCount(quantity);
 
         let cart = JSON.parse(localStorage.getItem('cart') || '[]')
-        cart = cart.filter(w => w.id !== item.id)
+        cart = getCartFromLocalStorage()
         if (quantity > 0) cart = [...cart, { ...item, quantity }]
         localStorage.setItem('cart', JSON.stringify(cart))
         setCart(cart)
     };
+
     return (
         <div className="flex items-center justify-center">
             {showButtons && (
@@ -66,4 +80,3 @@ function CardInputNumber({ item }) {
     );
 }
 export default CardInputNumber
-

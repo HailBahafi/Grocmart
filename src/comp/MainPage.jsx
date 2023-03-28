@@ -1,5 +1,8 @@
 import React, { useState, useContext } from 'react'
-import cond from './photo/cond.png'
+import img7 from './photo/7.png'
+import slider2 from './photo/slider2.png'
+import Slide3 from './photo/Slide3.png'
+import HeadlineAnimation from './HeadlineAnimation'
 import Items_Categories from './Categories/Items_Categories'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
@@ -44,49 +47,47 @@ export default function MainPage() {
   return (
     <div className={IsDarkMode ? "dark_mode" : ""}>
       <Header bgColor={bgColor} IsDarkMode={IsDarkMode} handledarkmode={handledarkmode} />
-
-      <h1 className={'pb-3 pl-3 font-sans text-xl font-bold ' + bgColor}>Today's Deal</h1>
       <div>
+      <HeadlineAnimation Hname={'Today`s Deal'} bgColor={bgColor} />
         <Swiper
           effect="fade"
           loop={true}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          autoplay={{ delay: 2000, disableOnInteraction: false }}
           grabCursor={true}
           speed={1000}
           onActiveIndexChange={(e) => handleSlideChange(e)}
           className="h-full w-full"
           pagination={{
-            // type: "progressbar",
+            //  type: "progressbar",
           }}
           modules={[Pagination, Navigation]}
         >
           <SwiperSlide >
             <div className={bgColor + " h-full w-full flex items-center justify-between"}>
-              <h2 className="text-4xl p-10 text-white font-bold">Slide 1</h2>
-              <img src={cond} alt="" className="p-10" style={{ maxHeight: "40vh", width: "55%" }} />
+              <h2 className="  text-3xl pl-32 text-white font-bold">𝙴𝙰𝚃 <br/> 𝙵𝙴𝙰𝚂𝚃 <br/> 𝚁𝙴𝙿𝙴𝙰𝚃 <br/> 𝔲𝔭𝔱𝔬 40%𝔬𝔣𝔣</h2>
+              <div className='h-2/12 w-5/12 pr-14' ><img src={img7} alt="" className="   " /></div>
             </div>
           </SwiperSlide>
           <SwiperSlide>
             <div className={bgColor + " h-full w-full flex items-center justify-between"}>
-              <h2 className="text-4xl p-10 text-white font-bold">Slide 2</h2>
-              <img src={cond} alt="" className="p-10" style={{ maxHeight: "40vh", width: "55%" }} />
+              <h2 className="text-4xl p-10 text-white font-bold"> 𝑩𝒆𝒂𝒕 𝒕𝒉𝒆 𝒉𝒆𝒂𝒕 𝒘𝒊𝒕𝒉 <br/> 𝒐𝒖𝒓 𝒊𝒄𝒚 𝒅𝒆𝒍𝒊𝒈𝒉𝒕𝒔 <br/> 𝑮𝒆𝒕 𝒖𝒑 𝒕𝒐 <br/> 15% 𝑶𝑭𝑭! <br/></h2>
+              <div className='h-2/12 w-5/12 pr-14' ><img src={Slide3} alt="" className="   " /></div>
             </div>
           </SwiperSlide>
           <SwiperSlide>
             <div className={bgColor + " h-full w-full flex items-center justify-between"}>
-              <h2 className="text-4xl p-10 text-white font-bold">Slide 3</h2>
-              <img src={cond} alt="" className="p-10" style={{ maxHeight:"40vh",width:"55%"}} />
+              <h2 className="text-4xl pl-20 text-white font-bold">𝒢𝑜𝑜𝒹 𝐹𝑜𝑜𝒹,<br/> 𝐵𝑒𝓉𝓉𝑒𝓇 𝑀𝑜𝑜𝒹 <br/>𝒰𝓅𝓉𝑜 20% 𝒪𝐹𝐹</h2>
+              <div className='h-2/12 w-5/12 pr-14' ><img src={slider2} alt="" className="   " /></div>
             </div>
           </SwiperSlide>
         </Swiper>
       </div>
-
-      <h1 className='p-4 font-sans text-xl font-bold'>Categories</h1>
-      <div className='flex justify-center text-center flex-wrap py-10'>
+      <HeadlineAnimation Hname={'Categories'} />
+        <div className='flex justify-center text-center flex-wrap py-10'>
         {
           Category.map((val) => {
             return (
-              <div
+              <div 
                 key={val.id}
                 className={`py-4 px-6 cursor-pointer   
                 ${activecateg === val.id
@@ -101,7 +102,9 @@ export default function MainPage() {
           })
         }
       </div>
-      {
+      
+      <div className=' flex items-center justify-center flex-wrap'>
+        {
         Itemcategory.map((val) => {
           return (
             <CardItem key={val.id}
@@ -116,6 +119,7 @@ export default function MainPage() {
           )
         })
       }
+      </div>
     </div>
   )
 }

@@ -3,9 +3,9 @@ import Cartelement from './Cartelement'
 import Cartcheckout from './Cartcheckout'
 import Header from './Header'
 import ThemeContext from './ContextProvider'
-import {BiShoppingBag} from "react-icons/bi"
+import { BiShoppingBag } from "react-icons/bi"
 function Cart() {
-    const {cart} = useContext(ThemeContext);
+    const { cart } = useContext(ThemeContext);
     const [totalPrice, setTotalPrice] = useState(0);
     useEffect(() => {
         updatetotallprice()
@@ -23,7 +23,7 @@ function Cart() {
         }
         setTotalPrice(result);
     }
-    
+
     const { IsDarkMode, SetIsDarkMode } = useContext(ThemeContext);
     const handledarkmode = () => {
         SetIsDarkMode(!IsDarkMode)
@@ -32,14 +32,15 @@ function Cart() {
     return (
         <>
             <div className={IsDarkMode ? "dark_mode" : ""}>
-                <Header IsDarkMode={IsDarkMode} handledarkmode={handledarkmode}/>
-                <div className='flex items-center justify-center  pb-8  overflow-hidden pt-4'>
-                    <span alt="" className={`${IsDarkMode ? "text-white" : " text-black"} `}>< BiShoppingBag size={38} /></span> 
+                <Header IsDarkMode={IsDarkMode} handledarkmode={handledarkmode} />
+                <div className='flex  items-center justify-center  pb-8  overflow-hidden pt-4'>
+                    <span alt="" className={`${IsDarkMode ? "text-white" : " text-black"} `}>< BiShoppingBag size={38} /></span>
                     <h1 className=' pl-3 font-sans text-3xl font-bold text-black'> My Cart</h1>
                 </div>
-                <div className=' flex flex-row'>
-                    <div className='flex items-center justify-between flex-col w-4/6 font-sans ml-10  '>
+                <div className='cartContainer'>
+                    <div className='flex items-center justify-between flex-col w-4/6 font-sans pl-10  max-w-7xl  '>
                         {
+                            Array.isArray(cart) &&
                             cart.map((val) => {
                                 return (
                                     <Cartelement
@@ -50,10 +51,10 @@ function Cart() {
                                         itemname={val.itemname}
                                         description={val.description}
                                         currentprice={val.currentprice}
-                                        quantity={val.quantity ?val.quantity:1 }
+                                        quantity={val.quantity ? val.quantity : 1}
                                         updatetotallprice={updatetotallprice}
                                     />
-                                )
+                                );
                             })
                         }
                         <span className='border-b border-slate-400 w-11/12' ></span>

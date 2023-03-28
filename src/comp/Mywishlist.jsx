@@ -3,13 +3,17 @@ import Checkbox from '@mui/material/Checkbox';
 import { BiSearchAlt } from 'react-icons/bi';
 import { RiDeleteBinLine, RiDragMove2Fill } from 'react-icons/ri';
 import { InputNumber } from 'rsuite';
+import { GiBasket } from "react-icons/gi"
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import DraggableRow from './DraggableRow '
 import 'rsuite/dist/rsuite.css'; //input css
 import Header from './Header'
 import ThemeContext from './ContextProvider'
 function Mywishlist() {
-  const [CheckboxItems,SetCheckboxItems]=useState([])
-  const [wishlistItems,setWishlistItems]=useState([]);
-  const {IsDarkMode,SetIsDarkMode,updateCart  } = useContext(ThemeContext);
+  const [CheckboxItems, SetCheckboxItems] = useState([])
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const { IsDarkMode, SetIsDarkMode, updateCart } = useContext(ThemeContext);
   useEffect(() => {
     const wishlist = JSON.parse(localStorage.getItem("wishlist") || '[]')
     setWishlistItems(wishlist)
@@ -35,7 +39,7 @@ function Mywishlist() {
       checkedList.splice(CheckboxItems.indexOf(value), 1)
       SetCheckboxItems(checkedList) // Update the state with the new checkedList
     }
-    
+
   }
   const DeleteSelectedCheckbox = () => {
     if (!CheckboxItems.length)
@@ -48,7 +52,7 @@ function Mywishlist() {
   const HandleMoveToCart = (id) => {
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     let wishlist = JSON.parse(localStorage.getItem("wishlist") || '[]');
-    
+
     if (id) {
       // Move single item to cart
       const itemIndex = wishlist.findIndex(item => item.id === id);
@@ -57,8 +61,8 @@ function Mywishlist() {
         wishlist.splice(itemIndex, 1);
         const found = cart.some(val => val.id === item.id);
         if (!found) {
-          cart.push(item);
-          updateCart(cart); // Update the cart state using the updateCart function
+          cart.push({ ...item, quantity: item.quantity || 1 });
+          updateCart(cart);
         }
         setWishlistItems(wishlist);
         localStorage.setItem('wishlist', JSON.stringify(wishlist));
@@ -72,76 +76,96 @@ function Mywishlist() {
           wishlist.splice(itemIndex, 1);
           const found = cart.some(val => val.id === item.id);
           if (!found) {
-            cart.push(item);
+            cart.push({ ...item, quantity: item.quantity || 1 });
           }
         }
-        console.log("pushed")
       });
-  
-      updateCart(cart); // Update the cart state using the updateCart function
+
+      updateCart(cart); // Update the cart state
       setWishlistItems(wishlist);
       localStorage.setItem('wishlist', JSON.stringify(wishlist));
       SetCheckboxItems([]); // Clear the selected items
     }
   };
 
+
+
   const handledarkmode = () => {
     SetIsDarkMode(!IsDarkMode)
-    localStorage.setItem('darkMode',!IsDarkMode)
+    localStorage.setItem('darkMode', !IsDarkMode)
   }
+
+  const handleMoveRow = (dragIndex, hoverIndex) => {
+    const newWishlistItems = [...wishlistItems];
+    const itemToMove = newWishlistItems.splice(dragIndex, 1)[0];
+    newWishlistItems.splice(hoverIndex, 0, itemToMove);
+    setWishlistItems(newWishlistItems);
+  };
+
+  const handleQuantityChange = (id, quantity) => {
+    const newWishlistItems = wishlistItems.map((item) => {
+      if (item.id === id) {
+        return { ...item, quantity };
+      }
+      return item;
+    });
+    setWishlistItems(newWishlistItems);
+    localStorage.setItem("wishlist", JSON.stringify(newWishlistItems));
+  };
   return (
     <>
       <div className={`${IsDarkMode ? "dark_mode" : ""} `}>
         <Header IsDarkMode={IsDarkMode} handledarkmode={handledarkmode} />
-        <div className='flex items-center justify-center pb-16 pt-4'>
-          <h1 className=' font-sans text-3xl font-bold pr-4 '>My wishlist</h1>
-          <div className='relative h-10 w-60 '>
-            <input type='search' className='outline-none w-full h-10 px-12 py-3 rounded-lg border-r-4 border-l-4 border-t-2 border-b-2 border-green-500/50 ' placeholder='search...' />
-            <span className='absolute top-2 left-4 rounded-full '>
-              <BiSearchAlt size={22} color={"black"} />
-            </span>
+        <DndProvider backend={HTML5Backend}>
+          <div className='flex items-center justify-center pb-16 pt-4'>
+            <span alt="" className={`${IsDarkMode ? "text-white" : " text-black"} pr-3`}>< GiBasket size={32} /></span>
+            <h1 className=' font-sans text-3xl font-bold pr-4 '>My wishlist</h1>
+            {/* <div className='relative h-10 w-60 '>
+              <input type='search' className='outline-none w-full h-10 px-12 py-3 rounded-lg border-r-4 border-l-4 border-t-2 border-b-2 border-green-500/50 ' placeholder='search...' />
+              <span className='absolute top-2 left-4 rounded-full '>
+                <BiSearchAlt size={22} color={"black"} />
+              </span>
+            </div> */}
           </div>
-        </div>
-        <table className='table-auto mx-20'>
-          <thead>
-            <tr className='font-sans text-xl font-bold border-b-2 border-green-500/50'>
-              <th className='w-1/5 px-2 py-4 '><h1 className=' text-xl'>Product Name</h1> </th>
-              <th className='w-1/4 px-4 py-4'>Unit Price</th>
-              <th className='w-1/6 px-2 py-4'>Quantity</th>
-              <th className='w-1/5 px-3 py-4'></th>
-              <th className='w-1/7 px-6 py-4'>Remove</th>
-              <th className='w-1/7 px-7 py-4'>Arrange</th>
-            </tr>
-          </thead>
-          <tbody>
-            {wishlistItems.map(item =>
-              <tr key={item.id} className='border-b border-gray-400 font-serif  text-md'>
-                <td className='px-2 py-4'>
-                  <div className='flex items-center'>
-                    <button><Checkbox
-                      color="success"
-                      checked={CheckboxItems.includes(item.id) || false}
-                      value={item.id || false }
-                      onChange={(e) => HandleSelectedCheckbox(e)} /></button>
-                    <img src={item.image} alt="/" className='w-20 ml-10 h-28 object-cover' />
-                    <div className='flex flex-col pl-2  '>
-                      <p className='font-bold'>{item.itemname} </p>
-                      <p className='text-sm font-sans'>{item.description}</p>
-                    </div>
-                  </div>
-                </td>
-                <td className='px-36 py-4 text-lg font-mono'>${item.currentprice}</td>
-                <td className='px-24 py-4 w-50'><div className='p-3 text-center font-mono text-xl' style={{width:100}}><InputNumber defaultValue={1} max={15} min={1} /></div> </td>
-                <td className=' pl-14 py-4'><button className=' bg-transparent hover:bg-green-700 text-black-700 font-semibold 
-                                hover:text-white py-3 px-3 border border-green-500 hover:border-transparent rounded-2xl' onClick={() => HandleMoveToCart(item.id)}>Add to cart</button></td>
-                <td className='pl-12 py-4'><button onClick={() => deleteitem(item.id)}><span><RiDeleteBinLine size={24} /></span></button></td>
-                <td className='pl-14 py-4'><button className='text-gray-500'  ><span><RiDragMove2Fill size={24} /></span></button></td>
-              </tr>)}
-          </tbody>
-        </table>
+          <table className='table-auto mx-20'>
+            <thead>
+              <tr className='font-sans text-xl font-bold border-b-2 border-green-500/50'>
+                <th className='w-1/5 px-2 py-4 '><h1 className=' text-xl'>Product Name</h1> </th>
+                <th className='w-1/4 px-4 py-4'>Unit Price</th>
+                <th className='w-1/6 px-2 py-4'>Quantity</th>
+                <th className='w-1/5 px-3 py-4'></th>
+                <th className='w-1/7 px-6 py-4'>Remove</th>
+                <th className='w-1/7 px-7 py-4'>Arrange</th>
+              </tr>
+            </thead>
+            <tbody>
+              {wishlistItems.map((item, index) => (
+                <DraggableRow
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  quantity={item.quantity ? item.quantity : 1}
+                  handleCheckbox={HandleSelectedCheckbox}
+                  handleDelete={deleteitem}
+                  handleMoveToCart={HandleMoveToCart}
+                  onQuantityChange={handleQuantityChange}
+                  handleMoveRow={handleMoveRow}
+                  onAddToCartClick={() => HandleMoveToCart(item.id)}
+                  checkboxState={CheckboxItems.includes(item.id) || false}
+                />
+
+              ))}
+
+              {wishlistItems.map(item =>
+                <tr key={item.id} className='border-b border-gray-400 font-serif  text-md'>
+                </tr>)}
+
+            </tbody>
+          </table>
+        </DndProvider>
         <div className='p-14 flex justify-end items-center'>
           <button className=' text-lg bg-transparent bg-gray-100 hover:bg-green-700 text-black-700 font-semibold hover:text-white
-                              h-16 w-36 border border-green-500 hover:border-transparent rounded-lg' onClick={()=>HandleMoveToCart()}>Add to cart</button>
+                              h-16 w-36 border border-green-500 hover:border-transparent rounded-lg' onClick={() => HandleMoveToCart()}>Add to cart</button>
           <button className='m-6' onClick={() => DeleteSelectedCheckbox()}><span><RiDeleteBinLine size={34} /></span></button>
         </div>
       </div>

@@ -22,9 +22,9 @@ function FirstPage() {
   };
   return (
     <>
-      <div className=" bg-green-200 flex items-center justify-center">
-          <img className="-mt-4 h-52  w-48  " src={logo} alt="logo" />
-          {/* <p class=" font-serif text-2xl pt-4 pb-4">Grocery Mart</p> */}
+      <div className=" bg-green-200 pl-56 pt-4 ">
+        <img className=" h-32  w-28 " src={logo} alt="logo" />
+        {/* <p class=" font-serif text-2xl pt-4 pb-4">Grocery Mart</p> */}
       </div>
       <Swiper
         slidesPerView={1}
@@ -35,17 +35,16 @@ function FirstPage() {
           delay: 4000,
           disableOnInteraction: false,
         }}
-        pagination={{
-          clickable: true,
-        }}
-
+        // pagination={{
+        //   clickable: true,
+        // }}
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
         onAutoplayTimeLeft={onAutoplayTimeLeft}
         className="mySwiper"
       >
         <SwiperSlide>
-          <div className="h-full w-11/12 bg-right bg-contain bg-no-repeat "
+          <div className="h-2/12 w-5/12 bg-right bg-contain bg-no-repeat "
             style={{ backgroundImage: `url(${img6})` }}>
             <h1 className='pt-40 pl-72 text-left text-4xl font-bold text-gray-900'>Fast Grocery Delivery</h1>
             <p className='pt-7 pl-32 text-left text-2xl font-light text-gray-800'>Enjoy the convenience of fast grocery delivery right to your doorstep<br />
@@ -53,11 +52,10 @@ function FirstPage() {
               your groceries as quickly as possible. You can count on us to provide<br />
               fast and reliable delivery services.</p>
           </div>
-          fgfd
         </SwiperSlide>
         <SwiperSlide>
           <div
-            className="h-full w-11/12 bg-right bg-contain bg-no-repeat "
+            className="h-2/12 w-5/12 bg-right bg-contain bg-no-repeat "
             style={{ backgroundImage: `url(${img2})` }}
           >
             <h1 className='pt-40 pl-72 text-left  text-4xl font-bold text-gray-900'>All Your Grocery Needs</h1>
@@ -69,7 +67,7 @@ function FirstPage() {
         </SwiperSlide>
         <SwiperSlide>
           <div
-            className="h-96 w-screen bg-right bg-contain bg-no-repeat mt-14  "
+            className="h-2/12 w-5/12 bg-right bg-contain bg-no-repeat mt-14  "
             style={{ backgroundImage: `url(${img7})` }}
           >
             <h1 className='pt-24 pl-72 text-left text-4xl font-bold text-gray-900'>Fresh and Healthy Produce</h1>
@@ -81,7 +79,7 @@ function FirstPage() {
         </SwiperSlide>
         <SwiperSlide>
           <div
-            className="h-full w-11/12 bg-right bg-contain bg-no-repeat "
+            className="h-full w-10/12 bg-right bg-contain bg-no-repeat "
             style={{ backgroundImage: `url(${img4})` }}
           >
             <h1 className='pt-40 pl-72 text-left  text-4xl font-bold text-gray-900'>Safe and Intimate Wellness</h1>
@@ -108,11 +106,13 @@ function FirstPage() {
           <span ref={progressContent}></span>
         </div>
       </Swiper>
-      <div className='flex items-center justify-center pt-2'>
+      <div className='flex items-center justify-center py-3 bg-white'>
         <Link to="/">
-          <button className="mb-4 bg-transparent hover:bg-green-500 text-black-700 font-semibold 
-           hover:text-white py-2 px-8  border border-green-500 hover:border-transparent rounded"
-          >Start Ordering</button>
+        <button className="my-1 group rounded-2xl h-12 w-40 bg-green-500 hover:text-gray-800 font-bold text-lg text-white relative overflow-hidden">
+                    Start Ordering
+                    <div className="absolute duration-500 inset-0 w-full h-full transition-all scale-0 group-hover:scale-100 group-hover:bg-white/20 rounded-2xl">
+                    </div>
+                </button>
         </Link>
       </div>
     </>

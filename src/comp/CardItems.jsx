@@ -3,7 +3,15 @@ import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import CardInputNumber from './CardInputNumber';
 import ThemeContext from './ContextProvider'
 
-function CartItem({id, image, title, description, currentprice, previousprice,itemname }) {
+function CartItem({
+    id,
+    image,
+    title, 
+    description, 
+    currentprice, 
+    previousprice,
+    itemname 
+}) {
     const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
@@ -55,7 +63,6 @@ function CartItem({id, image, title, description, currentprice, previousprice,it
                     </div>
                 </div>
             </div>
-        {/* </div> */}
         </>
     )
 }
