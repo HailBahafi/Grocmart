@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import { BiSearchAlt } from 'react-icons/bi';
 import { RiDeleteBinLine, RiDragMove2Fill } from 'react-icons/ri';
-import { InputNumber } from 'rsuite';
 import { GiBasket } from "react-icons/gi"
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -120,12 +117,6 @@ function Mywishlist() {
           <div className='flex items-center justify-center pb-16 pt-4'>
             <span alt="" className={`${IsDarkMode ? "text-white" : " text-black"} pr-3`}>< GiBasket size={32} /></span>
             <h1 className=' font-sans text-3xl font-bold pr-4 '>My wishlist</h1>
-            {/* <div className='relative h-10 w-60 '>
-              <input type='search' className='outline-none w-full h-10 px-12 py-3 rounded-lg border-r-4 border-l-4 border-t-2 border-b-2 border-green-500/50 ' placeholder='search...' />
-              <span className='absolute top-2 left-4 rounded-full '>
-                <BiSearchAlt size={22} color={"black"} />
-              </span>
-            </div> */}
           </div>
           <table className='table-auto mx-20'>
             <thead>
